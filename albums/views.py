@@ -1,26 +1,32 @@
-from django.shortcuts import render
+# albums/views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .forms import AlbumForm
 from .utils import save_album_to_file, handle_uploaded_file, get_all_albums
 
 def home_view(request):
-    context = {'message': '', 'is_error': False, 'albums': [], 'no_data_message': ''}
+    context = {'albums': [], 'no_data_message': ''}
     
     if request.method == 'POST':
         if 'file_upload' in request.FILES:
             uploaded_file = request.FILES['file_upload']
-            is_valid, message = handle_uploaded_file(uploaded_file)
-            context['message'] = message
-            context['is_error'] = not is_valid
+            is_valid, message_text = handle_uploaded_file(uploaded_file)
+            
+            if is_valid:
+                messages.success(request, message_text)
+            else:
+                messages.error(request, message_text)
+                
+            return redirect('home')
             
         elif 'form_submit' in request.POST:
             form = AlbumForm(request.POST)
             if form.is_valid():
                 save_album_to_file(form.cleaned_data)
-                context['message'] = "Данные успешно сохранены в JSON файл."
-                context['is_error'] = False
+                messages.success(request, "Данные успешно сохранены в JSON файл.")
+                return redirect('home')
             else:
-                context['message'] = "Ошибка валидации формы. Проверьте введенные данные."
-                context['is_error'] = True
+                messages.error(request, "Ошибка валидации формы. Проверьте введенные данные.")
                 context['form'] = form
 
     if 'form' not in context:
