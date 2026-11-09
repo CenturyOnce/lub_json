@@ -6,3 +6,4 @@ class AlbumForm(forms.Form):
     year = forms.IntegerField(label="Год выпуска", min_value=1900, max_value=2026)
     genre = forms.CharField(label="Жанр", max_length=100)
     tracks = forms.IntegerField(label="Количество треков", min_value=1)
+    country = forms.CharField(label="Страна", max_length=50, required=False)
