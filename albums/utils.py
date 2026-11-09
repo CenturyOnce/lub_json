@@ -4,7 +4,6 @@ import uuid
 from django.conf import settings
 
 def save_album_to_file(album_data):
-    """Сохраняет данные из формы в новый JSON файл."""
     data_structure = {"albums": [album_data]}
     filename = f"album_{uuid.uuid4().hex}.json"
     filepath = os.path.join(settings.DATA_DIR, filename)
@@ -14,7 +13,6 @@ def save_album_to_file(album_data):
     return filename
 
 def handle_uploaded_file(uploaded_file):
-    """Загружает файл, проверяет валидность и структуру. Удаляет, если не валиден."""
     if not uploaded_file.name.lower().endswith('.json'):
         return False, "Ошибка: разрешены только файлы формата JSON."
 
@@ -47,7 +45,6 @@ def handle_uploaded_file(uploaded_file):
     return True, f"Файл '{safe_filename}' успешно загружен и сохранен."
 
 def get_all_albums():
-    """Читает все JSON файлы из папки и возвращает список альбомов."""
     all_albums = []
     
     files = [f for f in os.listdir(settings.DATA_DIR) if f.endswith('.json')]
