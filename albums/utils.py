@@ -2,15 +2,6 @@ import json
 import os
 import uuid
 from django.conf import settings
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('', views.home_view, name='home'),
-    path('edit/<int:album_id>/', views.edit_album, name='edit_album'),
-    path('delete/<int:album_id>/', views.delete_album, name='delete_album'),
-    path('ajax/search/', views.ajax_search, name='ajax_search'),
-]
 
 def save_album_to_file(album_data):
     data_structure = {"albums": [album_data]}
