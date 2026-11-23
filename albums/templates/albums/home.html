@@ -32,6 +32,44 @@
                 </div>
             </div>
 
+    <div class="section">
+        <h2>2. Загрузить файл JSON</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file_upload" accept=".json" required>
+            <button type="submit">Загрузить и проверить</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>3. Существующие данные</h2>
+        {% if no_data_message %}
+            <p><strong>{{ no_data_message }}</strong></p>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Исполнитель</th>
+                        <th>Год</th>
+                        <th>Жанр</th>
+                        <th>Треков</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for album in albums %}
+                    <tr>
+                        <td>{{ album.title }}</td>
+                        <td>{{ album.artist }}</td>
+                        <td>{{ album.year }}</td>
+                        <td>{{ album.genre }}</td>
+                        <td>{{ album.tracks }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
             <div class="card">
                 <div class="card-header bg-secondary text-white">Загрузить JSON-файл</div>
                 <div class="card-body">
